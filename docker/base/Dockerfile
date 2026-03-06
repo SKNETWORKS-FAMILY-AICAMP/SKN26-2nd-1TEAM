@@ -16,6 +16,7 @@
 #
 # Updated:
 # - 2026-03-05: initial version (조동휘)
+# - 2026-03-06: ipykernel 설치 제거 (조동휘)
 # =========================================================================
 
 # python:3.12-slim 이미지를 기반으로 컨테이너 환경 생성
@@ -40,6 +41,5 @@ RUN apt-get update \
     && rm -rf /var/lib/apt/lists/*  # apt 캐시 제거로 이미지 용량 최소화
 
 
-# Jupyter / IDE에서 사용할 Python kernel 제공
-RUN python -m pip install --upgrade pip \
- && python -m pip install --no-cache-dir ipykernel
+# 사전에 PIP 업데이트
+RUN python -m pip install --upgrade pip
