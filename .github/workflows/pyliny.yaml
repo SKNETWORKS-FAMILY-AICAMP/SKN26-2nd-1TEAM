@@ -55,7 +55,7 @@ jobs:
         run: |
           if [ "${{ matrix.lint-tool }}" = "nbqa" ]; then
             nbqa pylint ${{ matrix.lint-paths }} \
-              --disable=C0103,W0611,W0612
+              --disable=C0114,C0103,W0611,W0612
           else
             pylint ${{ matrix.lint-paths }} \
               --disable=C0103,W0611,W0612,R0903
