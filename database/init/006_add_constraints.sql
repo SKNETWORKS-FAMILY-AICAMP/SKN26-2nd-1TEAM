@@ -53,8 +53,9 @@ ALTER TABLE dim_card_type
         PRIMARY KEY (card_type_id);
 
 ALTER TABLE creditcard_churn
+    MODIFY creditcard_churn_id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
     ADD CONSTRAINT pk_creditcard_churn
-        PRIMARY KEY (creditcard_churr_id);
+        PRIMARY KEY (creditcard_churn_id);
 
 
 -- =========================
