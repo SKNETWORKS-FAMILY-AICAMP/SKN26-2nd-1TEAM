@@ -5,16 +5,17 @@ Project:
 Module:
 - init
 
-File: 002_create_user
+File: 043_seed_dim_card_type
 
 Purpose:
-- 프로젝트에서 사용할 user 생성
+- dim card type 테이블 seed 데이터
 
 Author: 조동휘
-Created: 2026-03-07
+Created: 2026-03-08
 
 Updated:
-- 2026-03-07: initial version
+- 2026-03-08: initial version
+- 2026-03-09: init SQL 파일 넘버링 재정리 및 헤더 포맷 통일 (조동휘)
 =========================================================================
 */
 
@@ -26,31 +27,28 @@ Updated:
 -- -------------------------------------------------
 
 /* =======================
-   UP
+UP
 ======================= */
 START TRANSACTION;
 
---
 USE creditcard_churn_db;
 
--- DB 전체 관리자 권한 유저
-CREATE USER IF NOT EXISTS 'dev_admin'@'%'
-    IDENTIFIED BY 'dev_admin_pw';
-
--- pipeline 적재용
-CREATE USER IF NOT EXISTS 'pipeline_insert_user'@'%'
-    IDENTIFIED BY 'pipeline_insert_pw';
-
--- pipeline 출력용
-CREATE USER IF NOT EXISTS 'pipeline_select_user'@'%'
-    IDENTIFIED BY 'pipeline_select_pw';
+INSERT INTO
+    dim_card_type (
+        card_type_id,
+        card_type_label,
+        sort_order
+    )
+VALUES (1, 'Blue', 1),
+    (2, 'Silver', 2),
+    (3, 'Gold', 3),
+    (4, 'Platinum', 4),
+    (5, 'Unknown', 99);
 
 COMMIT;
 
-FLUSH PRIVILEGES;
-
 /* =======================
-   DOWN
+DOWN
 ======================= */
 -- 주의: 운영에서는 DOWN이 위험할 수 있음. 필요할 때만 작성.
 -- START TRANSACTION;

@@ -5,16 +5,17 @@ Project:
 Module:
 - init
 
-File: 008_seed_dim_education
+File: 011_create_user
 
 Purpose:
-- dim education seed 데이터 입력
+- 프로젝트에서 사용할 user 생성
 
 Author: 조동휘
-Created: 2026-03-08
+Created: 2026-03-07
 
 Updated:
-- 2026-03-08: initial version
+- 2026-03-07: initial version
+- 2026-03-09: init SQL 파일 넘버링 재정리 및 헤더 포맷 통일 (조동휘)
 =========================================================================
 */
 
@@ -26,26 +27,28 @@ Updated:
 -- -------------------------------------------------
 
 /* =======================
-   UP
+UP
 ======================= */
 START TRANSACTION;
 
+--
 USE creditcard_churn_db;
 
-INSERT INTO dim_education
-    (education_id, education_label, sort_order)
-VALUES (1, 'Uneducated', 1),
-       (2, 'High School', 2),
-       (3, 'College', 3),
-       (4, 'Graduate', 4),
-       (5, 'Post-Graduate', 5),
-       (6, 'Doctorate', 6),
-       (7, 'Unknown', 99);
+-- DB 전체 관리자 권한 유저
+CREATE USER IF NOT EXISTS 'dev_admin' @'%' IDENTIFIED BY 'dev_admin_pw';
+
+-- pipeline 적재용
+CREATE USER IF NOT EXISTS 'pipeline_insert_user' @'%' IDENTIFIED BY 'pipeline_insert_pw';
+
+-- pipeline 출력용
+CREATE USER IF NOT EXISTS 'pipeline_select_user' @'%' IDENTIFIED BY 'pipeline_select_pw';
 
 COMMIT;
 
+FLUSH PRIVILEGES;
+
 /* =======================
-   DOWN
+DOWN
 ======================= */
 -- 주의: 운영에서는 DOWN이 위험할 수 있음. 필요할 때만 작성.
 -- START TRANSACTION;

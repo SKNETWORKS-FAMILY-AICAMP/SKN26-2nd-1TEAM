@@ -5,7 +5,7 @@ Project:
 Module:
 - init
 
-File: 001_create_database
+File: 010_create_database
 
 Purpose:
 - creditcard_churn_db 생성
@@ -15,6 +15,7 @@ Created: 2026-03-07
 
 Updated:
 - 2026-03-07: initial version
+- 2026-03-09: init SQL 파일 넘버링 재정리 및 헤더 포맷 통일 (조동휘)
 =========================================================================
 */
 
@@ -26,18 +27,16 @@ Updated:
 -- -------------------------------------------------
 
 /* =======================
-   UP
+UP
 ======================= */
 START TRANSACTION;
 
-CREATE DATABASE IF  NOT EXISTS  creditcard_churn_db
-    DEFAULT CHARACTER SET utf8mb4
-    DEFAULT COLLATE utf8mb4_unicode_ci;
+CREATE DATABASE IF NOT EXISTS creditcard_churn_db DEFAULT CHARACTER SET utf8mb4 DEFAULT COLLATE utf8mb4_unicode_ci;
 
 COMMIT;
 
 /* =======================
-   DOWN
+DOWN
 ======================= */
 -- 주의: 운영에서는 DOWN이 위험할 수 있음. 필요할 때만 작성.
 -- START TRANSACTION;

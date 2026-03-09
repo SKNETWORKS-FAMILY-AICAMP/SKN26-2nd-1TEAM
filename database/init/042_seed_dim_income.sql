@@ -5,16 +5,17 @@ Project:
 Module:
 - init
 
-File: 007_seed_dim_marital
+File: 042_seed_dim_income
 
 Purpose:
-- dim_marital 테이블에 라벨링 데이터 입력
+- dim income 테이블 seed 데이터
 
 Author: 조동휘
 Created: 2026-03-08
 
 Updated:
 - 2026-03-08: initial version
+- 2026-03-09: init SQL 파일 넘버링 재정리 및 헤더 포맷 통일 (조동휘)
 =========================================================================
 */
 
@@ -26,23 +27,55 @@ Updated:
 -- -------------------------------------------------
 
 /* =======================
-   UP
+UP
 ======================= */
 START TRANSACTION;
 
 USE creditcard_churn_db;
 
-INSERT INTO dim_marital
-    (marital_id, marital_label, sort_order)
-VALUES (1, 'Single', 1),
-       (2, 'Married', 2),
-       (3, 'Divorced', 3),
-       (4, 'Unknown', 99);
+INSERT INTO
+    dim_income (
+        income_id,
+        income_label,
+        income_min,
+        income_max,
+        sort_order
+    )
+VALUES (
+        1,
+        'Less than $40K',
+        0,
+        40000,
+        1
+    ),
+    (
+        2,
+        '$40K - $60K',
+        40000,
+        60000,
+        2
+    ),
+    (
+        3,
+        '$60K - $80K',
+        60000,
+        80000,
+        3
+    ),
+    (
+        4,
+        '$80K - $120K',
+        80000,
+        120000,
+        4
+    ),
+    (5, '$120K +', 120000, NULL, 5),
+    (6, 'Unknown', NULL, NULL, 99);
 
 COMMIT;
 
 /* =======================
-   DOWN
+DOWN
 ======================= */
 -- 주의: 운영에서는 DOWN이 위험할 수 있음. 필요할 때만 작성.
 -- START TRANSACTION;

@@ -5,7 +5,7 @@ Project:
 Module:
 - init
 
-File: 004_create_dimension_tables
+File: 020_create_dimension_tables
 
 Purpose:
 - creditcard_churn의 label관련 tables
@@ -15,6 +15,7 @@ Created: 2026-03-07
 
 Updated:
 - 2026-03-07: initial version
+- 2026-03-09: init SQL 파일 넘버링 재정리 및 헤더 포맷 통일 (조동휘)
 =========================================================================
 */
 
@@ -26,42 +27,42 @@ Updated:
 -- -------------------------------------------------
 
 /* =======================
-   UP
+UP
 ======================= */
 START TRANSACTION;
 
 USE creditcard_churn_db;
 
 CREATE TABLE IF NOT EXISTS dim_education (
-                           education_id    BIGINT UNSIGNED NOT NULL,
-                           education_label VARCHAR(30)     NOT NULL,
-                           sort_order      INT             NULL
+    education_id TINYINT UNSIGNED NOT NULL,
+    education_label VARCHAR(30) NOT NULL,
+    sort_order INT NULL
 ) ENGINE = InnoDB;
 
 CREATE TABLE IF NOT EXISTS dim_card_type (
-                           card_type_id    BIGINT UNSIGNED NOT NULL,
-                           card_type_label VARCHAR(20)     NOT NULL,
-                           sort_order      INT             NULL
+    card_type_id TINYINT UNSIGNED NOT NULL,
+    card_type_label VARCHAR(20) NOT NULL,
+    sort_order INT NULL
 ) ENGINE = InnoDB;
 
 CREATE TABLE IF NOT EXISTS dim_marital (
-                         marital_id    BIGINT UNSIGNED NOT NULL,
-                         marital_label VARCHAR(30)     NOT NULL,
-                         sort_order    INT             NULL
+    marital_id TINYINT UNSIGNED NOT NULL,
+    marital_label VARCHAR(30) NOT NULL,
+    sort_order INT NULL
 ) ENGINE = InnoDB;
 
 CREATE TABLE IF NOT EXISTS dim_income (
-                        income_id    BIGINT UNSIGNED NOT NULL,
-                        income_label VARCHAR(30)     NOT NULL,
-                        income_min   INT             NULL,
-                        income_max   INT             NULL,
-                        sort_order   INT             NULL
+    income_id TINYINT UNSIGNED NOT NULL,
+    income_label VARCHAR(30) NOT NULL,
+    income_min INT NULL,
+    income_max INT NULL,
+    sort_order INT NULL
 ) ENGINE = InnoDB;
 
 COMMIT;
 
 /* =======================
-   DOWN
+DOWN
 ======================= */
 -- 주의: 운영에서는 DOWN이 위험할 수 있음. 필요할 때만 작성.
 -- START TRANSACTION;

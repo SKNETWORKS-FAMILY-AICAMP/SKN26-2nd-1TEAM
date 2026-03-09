@@ -5,16 +5,17 @@ Project:
 Module:
 - init
 
-File: 010_seed_dim_card_type
+File: 041_seed_dim_education
 
 Purpose:
-- dim card type 테이블 seed 데이터
+- dim education seed 데이터 입력
 
 Author: 조동휘
 Created: 2026-03-08
 
 Updated:
 - 2026-03-08: initial version
+- 2026-03-09: init SQL 파일 넘버링 재정리 및 헤더 포맷 통일 (조동휘)
 =========================================================================
 */
 
@@ -26,24 +27,30 @@ Updated:
 -- -------------------------------------------------
 
 /* =======================
-   UP
+UP
 ======================= */
 START TRANSACTION;
 
 USE creditcard_churn_db;
 
-INSERT INTO dim_card_type
-    (card_type_id, card_type_label, sort_order)
-VALUES (1, 'Blue', 1),
-       (2, 'Silver', 2),
-       (3, 'Gold', 3),
-       (4, 'Platinum', 4),
-       (5, 'Unknown', 99);
+INSERT INTO
+    dim_education (
+        education_id,
+        education_label,
+        sort_order
+    )
+VALUES (1, 'Uneducated', 1),
+    (2, 'High School', 2),
+    (3, 'College', 3),
+    (4, 'Graduate', 4),
+    (5, 'Post-Graduate', 5),
+    (6, 'Doctorate', 6),
+    (7, 'Unknown', 99);
 
 COMMIT;
 
 /* =======================
-   DOWN
+DOWN
 ======================= */
 -- 주의: 운영에서는 DOWN이 위험할 수 있음. 필요할 때만 작성.
 -- START TRANSACTION;
