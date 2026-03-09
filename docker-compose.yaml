@@ -19,6 +19,7 @@
 # - 2026-03-06: Issue #9 대응 - ml_cpu / pipeline JupyterLab 개발 환경 구성 (조동휘)
 # - 2026-03-07: MySQL Service에 초기 데이터베이스, 유저, table 생성 작업 (조동휘)
 # - 2026-03-08: MySQL Service에 정상적으로 서버 동작 확인 작업 추가 (조동휘)
+# - 2026-03-08: Pipeline Service가 동작시 DB에 데이터 적재 생성 및 Jyputer lab 실행문 제거 (조동휘)
 # =========================================================================
 
 # name Compose 이름 지정
@@ -78,10 +79,10 @@ services:
       - ./database/init:/docker-entrypoint-initdb.d:ro
 
     healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-p1234"]
-      interval: 10s
+      test: ["CMD-SHELL", "mysqladmin ping -h 127.0.0.1 -uroot -p$${MYSQL_ROOT_PASSWORD} --silent"]
+      interval: 5s
       timeout: 5s
-      retries: 5
+      retries: 20
       start_period: 20s
 
   # -----------------------------------------------------------------------
@@ -113,17 +114,6 @@ services:
     tty: true
     stdin_open: true
 
-    # Jupyter 접속용 포트
-    ports:
-      - "18888:8888"
-
-    # JupyterLab 서버 실행
-    command: jupyter lab --ip=0.0.0.0 --port=8888 --no-browser --allow-root
-
-    # depends_on: python_base 이미지가 먼저 빌드되도록 설정
-    depends_on:
-      - python_base
-
 
   # -----------------------------------------------------------------------
   # pipeline
@@ -149,18 +139,13 @@ services:
       - ./pipeline:/app/pipeline
 
     # working_dir: 컨테이너 기본 작업 디렉토리 설정
-    working_dir: /app/pipeline
+    working_dir: /app
 
     # 터미널 및 표준 입력 유지
     tty: true
     stdin_open: true
 
-    # Jupyter 접속용 포트
-    ports:
-      - "28888:8888"
-
-    # JupyterLab 서버 실행
-    command: jupyter lab --ip=0.0.0.0 --port=8888 --no-browser --allow-root
+    command: bash -lc "python -m pipeline.run_etl && tail -f /dev/null"
 
 
 # -----------------------------------------------------------------------
