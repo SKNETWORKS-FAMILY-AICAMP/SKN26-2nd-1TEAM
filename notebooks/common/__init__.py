@@ -19,7 +19,9 @@ Updated:
 =========================================================================
 """
 from .fetch_creditcard import fetch_creditcard
+from .print_report import print_report
 
 __all__ = [
-    "fetch_creditcard"
+    "fetch_creditcard",
+    "print_report"
     ]
