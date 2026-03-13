@@ -178,6 +178,7 @@ Thumbs.db
 # Logs
 *.log
 logs/
+.vscode/
 
 # mlflow
 mlruns/
