@@ -11,11 +11,12 @@ File: config.py
 Purpose:
 - common 모듈에서 사용하는 환경변수 및 API 관련 설정을 관리하는 파일
 
-Author: @USERNAME
+Author: @Nobrain711
 Created: 2026-03-13
 
 Updated:
-- 2026-03-13: initial version (@USERNAME)
+- 2026-03-13: initial version (@Nobrain711)
+- 2026-03-13: 파일 헤더 누락 된 사항 추가 (@Nobrain711)
 =========================================================================
 """
 
