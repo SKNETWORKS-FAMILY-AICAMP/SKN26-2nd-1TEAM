@@ -18,12 +18,11 @@ Updated:
 - 2026-03-13: initial version (@nobrain711)
 =========================================================================
 """
-
-from typing import Any, Optional
-
 import mlflow.sklearn
 import mlflow.xgboost
 import mlflow.lightgbm
+import mlflow.pyfunc  # 추가
+from typing import Any, Optional
 
 def log_model(
     model: Any,
@@ -31,24 +30,14 @@ def log_model(
     artifact_path: str = "model",
     input_example: Optional[Any] = None,
 ) -> None:
-    """
-    모델 타입에 맞게 MLflow에 모델을 기록합니다.
-
-    Args:
-        model (Any): 학습된 모델 객체
-        model_type (str): 모델 타입
-            - "sklearn"
-            - "lightgbm"
-            - "xgboost"
-        artifact_path (str): artifact 저장 경로
-        input_example (Optional[Any]): 입력 예시 데이터
-    """
     match model_type:
         case "sklearn":
+            # imblearn 모델 등 sklearn 호환 모델을 더 범용적으로 기록
             mlflow.sklearn.log_model(
                 sk_model=model,
                 artifact_path=artifact_path,
                 input_example=input_example,
+                # 필요시 serialization_format="cloudpickle" 등을 고려할 수 있음
             )
 
         case "lightgbm":
@@ -63,6 +52,13 @@ def log_model(
                 xgb_model=model,
                 artifact_path=artifact_path,
                 input_example=input_example,
+            )
+            
+        # [긴급 추가] 만약 위 방법들이 다 안되면 최후의 보루
+        case "pyfunc":
+            mlflow.pyfunc.log_model(
+                python_model=model,
+                artifact_path=artifact_path,
             )
 
         case _:

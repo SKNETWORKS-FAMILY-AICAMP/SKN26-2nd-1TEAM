@@ -33,7 +33,7 @@ def fetch_creditcard(X_y_split: bool = False
     Returns:
         DataFrame | Tuple[DataFrame, Series]: X_y_split이 False인 경우 DataFrame, True인 경우 (DataFrame, Series) 형태로 반환
     """
-    response = requests.get("http://pipeline:8000/dataset/creditcard-churn", params={"X_y_split": X_y_split})
+    response = requests.get("https://0b9f-183-109-116-251.ngrok-free.app/dataset/creditcard-churn", params={"X_y_split": X_y_split})
     payload = response.json()
     
     if X_y_split:
