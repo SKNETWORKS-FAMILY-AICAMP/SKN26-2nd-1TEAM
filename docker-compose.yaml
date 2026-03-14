@@ -23,6 +23,7 @@
 # - 2026-03-08: compose 파일 수정 (python_base 이미지 빌드 및 각 서비스 build 경로 정리, mlflow와 streamlit 추가) 및 프로젝트 명 반영 (@nobrain711)
 # - 2026-03-08: compose 파일 수정 (.vscode local mount, notebooks syspath 이동) 및 작업자명을 github 이름으로 변경 (@nobrain711)
 # - 2026-03-12: env_file / profiles / DB 계정 분리 반영 / 프로젝트 명 수정 (@nobrain711)
+# - 2026-03-13: pipeline port포워딩 / streamlit system working list app 추가 (@nobrain711)
 # =========================================================================
 
 # name Compose 이름 지정
@@ -232,6 +233,9 @@ services:
       MYSQL_WRITER_PASSWORD: ${MYSQL_WRITER_PASSWORD}
       MYSQL_WRITER_DATABASE: ${MYSQL_DATABASE}
 
+    ports:
+      - 18000:8000
+
     # healthcheck: pipeline API 서버가 정상적으로 실행되었는지 확인하기 위한 healthcheck 설정
     healthcheck:
       test: [ "CMD-SHELL", "curl -f http://localhost:8000/health/z || exit 1" ]
@@ -278,6 +282,7 @@ services:
     environment:
       MLFLOW_TRACKING_URI: ${MLFLOW_API}
       PIPELINE_API_BASE_URL: ${PIPELINE_API}
+      PYTHONPATH: /app
 
     # 터미널 및 표준 입력 유지
     tty: true
