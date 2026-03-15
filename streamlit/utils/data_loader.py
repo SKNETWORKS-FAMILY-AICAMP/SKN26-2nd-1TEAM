@@ -10,40 +10,67 @@ File:
 - data_loader.py
 
 Purpose:
-- Streamlit 화면에서 사용하는 샘플 데이터 생성 기능을 제공합니다.
+- Streamlit 화면에서 사용하는 데이터 로드 기능을 제공합니다.
 
 Author: @nobrain711
 Created: 2026-03-13
 
 Updated:
 - 2026-03-13: initial version (@nobrain711)
+- 2026-03-15: MLflow leaderboard 연동 (@nobrain711)
 =========================================================================
 """
 
 from pandas import DataFrame
 from typing import Dict, List
 
+from common.config import MLFLOW_EXPERIMENT_NAME, MLFLOW_TRACKING_URI
+from common.mlflow.load_latest_scores_by_model import load_latest_scores_by_model
+
+
+MODEL_NAME_MAP = {
+    "hist_gradient_boosting": "HistGradientBoosting",
+    "xgboost_random_grid_search": "XGBoost",
+    "easy_ensemble_baseline": "EasyEnsemble",
+    "logistic_regression_baseline": "Logistic Regression",
+    "lightgbm_baseline": "LightGBM",
+}
+
+
 def get_leaderboard_data() -> DataFrame:
     """
-    모델 리더보드 데이터를 반환합니다.
+    MLflow에서 최신 모델 리더보드 데이터를 조회하여 반환합니다.
     """
-    leaderboard_data = DataFrame(
-        {
-            "모델명(Model)": [
-                "HistGradientBoosting",
-                "XGBoost",
-                "EasyEnsemble",
-                "Random Forest",
-                "Logistic Regression",
-                "LightGBM",
-            ],
-            "정확도(Acc)": [0.9858, 0.9729, 0.7698, 0.8375, 0.8761, 0.9000],
-            "재현율(Recall)": [0.9369, 0.9800, 0.9800, 0.7389, 0.9588, 0.8900],
-            "ROC-AUC": [0.9979, 0.9720, 0.9701, 0.9476, 0.8926, 0.9469],
-            "PR-AUC": [0.9901, 0.9600, 0.8868, 0.9246, 0.9764, 0.9523],
-            "F1-score": [0.9556, 0.9800, 0.5800, 0.7877, 0.9286, 0.9231],
-        }
-    ).sort_values(by="ROC-AUC", ascending=False)
+    latest_scores = load_latest_scores_by_model(
+        tracking_uri=MLFLOW_TRACKING_URI,
+        experiment_name=MLFLOW_EXPERIMENT_NAME,
+    )
+
+    rows = []
+    for run_name, run_info in latest_scores.items():
+        metrics = run_info.get("metrics", {})
+
+        rows.append(
+            {
+                "모델명(Model)": MODEL_NAME_MAP.get(run_name, run_name),
+                "정확도(Acc)": metrics.get("accuracy"),
+                "정밀도(Precision)": metrics.get("precision"),
+                "재현율(Recall)": metrics.get("recall"),
+                "ROC-AUC": metrics.get("roc_auc"),
+                "PR-AUC": metrics.get("pr_auc"),
+                "F1-score": metrics.get("f1_score"),
+            }
+        )
+
+    leaderboard_data = DataFrame(rows)
+
+    if leaderboard_data.empty:
+        return leaderboard_data
+
+    leaderboard_data = leaderboard_data.sort_values(
+        by="ROC-AUC",
+        ascending=False,
+    ).reset_index(drop=True)
 
     return leaderboard_data
 
