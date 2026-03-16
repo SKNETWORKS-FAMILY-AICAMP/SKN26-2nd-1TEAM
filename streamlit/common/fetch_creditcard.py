@@ -12,10 +12,10 @@ Purpose:
 - pipeline이랑 통신해서 creditcard 데이터셋을 가져오는 함수
 
 Author: @nobrain711
-Created: 2026-03-10
+Created: 2026-03-16
 
 Updated:
-- 2026-03-10: initial version (@nobrain711)
+- 2026-03-16: initial version (@nobrain711)
 =========================================================================
 """
 import requests
