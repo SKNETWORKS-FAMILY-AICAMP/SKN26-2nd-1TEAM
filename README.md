@@ -233,7 +233,7 @@ https://www.kaggle.com/datasets/sakshigoyal7/credit-card-customers
 
 ### 물리 모델링
 <div align="center">
-  <img src="./docs/erd/physical_model_creditcard_churn.png" width="800px" alt="Credit Card Churn ERD">
+  <img src="docs/ERD/physical_model_creditcard_churn.png" width="800px" alt="Credit Card Churn ERD">
 </div>
 
 본 프로젝트는 Kaggle 원본 데이터를 기반으로 고객 이탈 분석에 필요한 주요 피처를 관리할 수 있도록 데이터베이스 구조를 설계했습니다.  
